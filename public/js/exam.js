@@ -1,5 +1,24 @@
 const countdownElement = document.getElementById('countdown');
 const examForm = document.getElementById('exam-form');
+const participantNameInput = document.getElementById('participant-name');
+
+const hasValidParticipantName = () => {
+  if (!participantNameInput) {
+    return true;
+  }
+
+  const trimmedValue = participantNameInput.value.trim();
+  participantNameInput.value = trimmedValue;
+
+  if (trimmedValue.length < 2) {
+    participantNameInput.setCustomValidity('Vui long nhap ten hoc sinh tu 2 ky tu tro len.');
+    participantNameInput.reportValidity();
+    return false;
+  }
+
+  participantNameInput.setCustomValidity('');
+  return true;
+};
 
 if (countdownElement && examForm) {
   const durationMinutes = Number(countdownElement.dataset.minutes || 0);
@@ -19,9 +38,19 @@ if (countdownElement && examForm) {
 
     if (remainingSeconds <= 0) {
       window.clearInterval(timer);
-      examForm.submit();
+      if (hasValidParticipantName()) {
+        examForm.requestSubmit();
+      }
     }
   }, 1000);
+}
+
+if (examForm) {
+  examForm.addEventListener('submit', (event) => {
+    if (!hasValidParticipantName()) {
+      event.preventDefault();
+    }
+  });
 }
 
 const dragChips = Array.from(document.querySelectorAll('.drag-chip'));

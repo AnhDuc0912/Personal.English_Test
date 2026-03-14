@@ -22,7 +22,10 @@
             <h2>{{examTitle}}</h2>
             <p><strong>Hoc sinh:</strong> {{participantName}}</p>
             <p><strong>Diem:</strong> {{score}}% ({{correctCount}}/{{totalQuestions}})</p>
-            <p><strong>Nop luc:</strong> {{createdAt}}</p>
+            <p><strong>Nop luc:</strong> {{submittedAtLabel}}</p>
+            <div class="admin-row-actions">
+              <a href="/admin/results/{{_id}}" class="primary-link">Xem chi tiet</a>
+            </div>
           </article>
         {{/each}}
       </div>

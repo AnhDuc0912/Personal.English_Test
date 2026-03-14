@@ -554,6 +554,25 @@ h2 {
   margin-bottom: 6px;
 }
 
+.attempt-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.attempt-meta p {
+  margin: 0;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(57, 167, 162, 0.08);
+}
+
+.attempt-detail-list {
+  display: grid;
+  gap: 12px;
+}
+
 .question-builder select {
   width: 100%;
   border: 2px solid rgba(57, 167, 162, 0.2);

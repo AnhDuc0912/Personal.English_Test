@@ -25,6 +25,43 @@ function toEditorPayload(questions = []) {
   }));
 }
 
+function formatDate(value) {
+  if (!value) {
+    return '';
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  return new Intl.DateTimeFormat('vi-VN', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  }).format(date);
+}
+
+function formatAnswerValue(value) {
+  if (value === null || value === undefined || value === '') {
+    return 'Chua tra loi';
+  }
+
+  if (Array.isArray(value)) {
+    return value.length ? value.join(', ') : 'Chua tra loi';
+  }
+
+  if (typeof value === 'object') {
+    const entries = Object.entries(value);
+    if (!entries.length) {
+      return 'Chua tra loi';
+    }
+
+    return entries.map(([key, answer]) => `${key}: ${answer || '-'}`).join(' | ');
+  }
+
+  return String(value);
+}
+
 async function renderHomePage(req, res, next) {
   try {
     const exams = await Exam.find({ isPublished: true }).sort({ createdAt: -1 }).lean();
@@ -80,7 +117,17 @@ async function submitExam(req, res, next) {
       });
     }
 
-    const participantName = String(req.body.participantName || '').trim() || 'Hoc sinh';
+    const participantName = String(req.body.participantName || '').trim();
+
+    if (!participantName) {
+      return res.status(400).render('exam', {
+        pageTitle: exam.title,
+        exam,
+        formError: 'Vui long nhap ten hoc sinh truoc khi nop bai.',
+        participantNameValue: ''
+      });
+    }
+
     const submittedAnswers = req.body.answers || {};
     const summary = scoreExam(exam, submittedAnswers);
 
@@ -115,9 +162,42 @@ async function renderAdminResultList(req, res, next) {
       .limit(200)
       .lean();
 
+    const attemptsWithDisplay = attempts.map((attempt) => ({
+      ...attempt,
+      submittedAtLabel: formatDate(attempt.createdAt)
+    }));
+
     res.render('admin-results', {
       pageTitle: 'Lich su ket qua bai thi',
-      attempts
+      attempts: attemptsWithDisplay
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function renderAdminResultDetail(req, res, next) {
+  try {
+    const attempt = await ExamAttempt.findById(req.params.id).lean();
+
+    if (!attempt) {
+      return res.redirect('/admin/results');
+    }
+
+    const details = (attempt.details || []).map((detail, index) => ({
+      ...detail,
+      index,
+      userAnswerLabel: formatAnswerValue(detail.userAnswer),
+      correctAnswerLabel: formatAnswerValue(detail.correctAnswer)
+    }));
+
+    return res.render('admin-result-detail', {
+      pageTitle: 'Chi tiet ket qua bai thi',
+      attempt: {
+        ...attempt,
+        submittedAtLabel: formatDate(attempt.createdAt)
+      },
+      details
     });
   } catch (error) {
     next(error);
@@ -367,5 +447,6 @@ module.exports = {
   renderEditExamPage,
   updateExam,
   deleteExam,
-  renderAdminResultList
+  renderAdminResultList,
+  renderAdminResultDetail
 };

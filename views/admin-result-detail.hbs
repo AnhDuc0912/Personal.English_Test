@@ -1,0 +1,39 @@
+<main class="home-page admin-page">
+  <section class="hero-card admin-header-card">
+    <div>
+      <a href="/admin/results" class="back-link">Quay lai lich su ket qua</a>
+      <p class="eyebrow">Admin</p>
+      <h1>Chi tiet ket qua bai thi</h1>
+      <p class="hero-copy">Thong tin bai nop va ket qua tung cau hoi.</p>
+    </div>
+    <div class="admin-header-actions">
+      <a href="/admin/exams" class="primary-link">Quan ly de thi</a>
+      <form action="/admin/logout" method="POST">
+        <button class="primary-button" type="submit">Dang xuat</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="question-card admin-form-card">
+    <div class="attempt-meta">
+      <p><strong>De thi:</strong> {{attempt.examTitle}}</p>
+      <p><strong>Hoc sinh:</strong> {{attempt.participantName}}</p>
+      <p><strong>Nop luc:</strong> {{attempt.submittedAtLabel}}</p>
+      <p><strong>Diem:</strong> {{attempt.score}}% ({{attempt.correctCount}}/{{attempt.totalQuestions}})</p>
+    </div>
+
+    <div class="attempt-detail-list">
+      {{#each details}}
+        <article class="detail-item {{#if isCorrect}}is-correct{{else}}is-wrong{{/if}}">
+          <div>
+            <p class="detail-index">Cau {{addOne index}}</p>
+            <h2>{{prompt}}</h2>
+            <p><strong>Dap an hoc sinh:</strong> {{userAnswerLabel}}</p>
+            <p><strong>Dap an dung:</strong> {{correctAnswerLabel}}</p>
+          </div>
+          <span>{{#if isCorrect}}Dung{{else}}Sai{{/if}}</span>
+        </article>
+      {{/each}}
+    </div>
+  </section>
+</main>

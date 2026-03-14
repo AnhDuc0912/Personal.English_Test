@@ -13,7 +13,8 @@ const {
   renderEditExamPage,
   updateExam,
   deleteExam,
-  renderAdminResultList
+  renderAdminResultList,
+  renderAdminResultDetail
 } = require('../controllers/examController');
 const { requireAdmin, requireGuest } = require('../middlewares/auth');
 
@@ -29,6 +30,7 @@ router.post('/admin/logout', requireAdmin, logoutAdmin);
 
 router.get('/admin/exams', requireAdmin, renderAdminExamList);
 router.get('/admin/results', requireAdmin, renderAdminResultList);
+router.get('/admin/results/:id', requireAdmin, renderAdminResultDetail);
 router.get('/admin/exams/new', requireAdmin, renderCreateExamPage);
 router.post('/admin/exams', requireAdmin, createExam);
 router.get('/admin/exams/:id/edit', requireAdmin, renderEditExamPage);

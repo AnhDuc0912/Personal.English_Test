@@ -13,6 +13,10 @@
   </header>
 
   <form action="/exams/{{exam._id}}/submit" method="POST" id="exam-form">
+    {{#if formError}}
+      <p class="admin-alert admin-alert--error">{{formError}}</p>
+    {{/if}}
+
     <section class="question-card">
       <div class="question-card__heading">
         <span class="question-index">Thong tin</span>
@@ -22,10 +26,14 @@
       <div class="fill-blank-box">
         <input
           type="text"
+          id="participant-name"
           name="participantName"
           placeholder="Vi du: Be An"
           autocomplete="off"
           maxlength="120"
+          minlength="2"
+          required
+          value="{{participantNameValue}}"
         />
       </div>
     </section>

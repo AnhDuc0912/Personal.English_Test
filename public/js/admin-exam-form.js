@@ -56,6 +56,18 @@ const storage = document.getElementById('questions-json-storage');
 if (questionList && form && storage) {
   let questionCounter = 0;
 
+  const renumberQuestionCards = () => {
+    const cards = Array.from(questionList.querySelectorAll('.question-builder__card'));
+
+    cards.forEach((card, index) => {
+      const title = card.querySelector('.question-builder__card-head h3');
+
+      if (title) {
+        title.textContent = `Cau hoi ${index + 1}`;
+      }
+    });
+  };
+
   const escapeHtml = (value) =>
     String(value || '')
       .replaceAll('&', '&amp;')
@@ -276,10 +288,12 @@ if (questionList && form && storage) {
     const removeButton = card.querySelector('[data-action="remove-question"]');
     removeButton.addEventListener('click', () => {
       card.remove();
+      renumberQuestionCards();
     });
 
     updateTypeSections(card);
     questionList.appendChild(card);
+    renumberQuestionCards();
   };
 
   const loadQuestions = (items) => {
@@ -288,6 +302,8 @@ if (questionList && form && storage) {
     items.forEach((item) => {
       renderQuestionCard(item);
     });
+
+    renumberQuestionCards();
   };
 
   const getCurrentQuestions = () => {
