@@ -1,0 +1,46 @@
+<main class="result-page">
+  <section class="result-card">
+    <a href="/" class="back-link">Trang chu</a>
+
+    {{#if errorMessage}}
+      <h1>Thong bao</h1>
+      <p>{{errorMessage}}</p>
+    {{else}}
+      <p class="eyebrow">Ket qua bai thi</p>
+      <h1>{{exam.title}}</h1>
+      {{#if attempt}}
+        <p class="hero-copy">Da luu ket qua cho: <strong>{{attempt.participantName}}</strong></p>
+      {{/if}}
+      <div class="score-ring">
+        <strong>{{summary.score}}%</strong>
+        <span>Diem so</span>
+      </div>
+      <div class="stats-row">
+        <div>
+          <strong>{{summary.correctCount}}</strong>
+          <span>Tra loi dung</span>
+        </div>
+        <div>
+          <strong>{{summary.wrongCount}}</strong>
+          <span>Can luyen them</span>
+        </div>
+        <div>
+          <strong>{{summary.totalQuestions}}</strong>
+          <span>Tong cau</span>
+        </div>
+      </div>
+
+      <div class="detail-list">
+        {{#each summary.details}}
+          <article class="detail-item {{#if isCorrect}}is-correct{{else}}is-wrong{{/if}}">
+            <div>
+              <p class="detail-index">Cau {{addOne @index}}</p>
+              <h2>{{prompt}}</h2>
+            </div>
+            <span>{{#if isCorrect}}Dung{{else}}Sai{{/if}}</span>
+          </article>
+        {{/each}}
+      </div>
+    {{/if}}
+  </section>
+</main>

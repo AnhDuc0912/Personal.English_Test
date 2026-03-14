@@ -1,0 +1,115 @@
+<main class="exam-page">
+  <header class="exam-header">
+    <div>
+      <a href="/" class="back-link">Trang chu</a>
+      <p class="eyebrow">De thi thu</p>
+      <h1>{{exam.heroEmoji}} {{exam.title}}</h1>
+      <p class="hero-copy">{{exam.description}}</p>
+    </div>
+    <div class="timer-card">
+      <span>Thoi gian</span>
+      <strong id="countdown" data-minutes="{{exam.durationMinutes}}">{{exam.durationMinutes}}:00</strong>
+    </div>
+  </header>
+
+  <form action="/exams/{{exam._id}}/submit" method="POST" id="exam-form">
+    <section class="question-card">
+      <div class="question-card__heading">
+        <span class="question-index">Thong tin</span>
+        <h2>Ten hoc sinh</h2>
+        <p>Nhap ten de luu lai ket qua bai thi.</p>
+      </div>
+      <div class="fill-blank-box">
+        <input
+          type="text"
+          name="participantName"
+          placeholder="Vi du: Be An"
+          autocomplete="off"
+          maxlength="120"
+        />
+      </div>
+    </section>
+
+    {{#each exam.questions}}
+      <section class="question-card">
+        <div class="question-card__heading">
+          <span class="question-index">Cau {{addOne @index}}</span>
+          <h2>{{prompt}}</h2>
+          {{#if instructions}}
+            <p>{{instructions}}</p>
+          {{/if}}
+          {{#if imageUrl}}
+            <div class="question-image-wrap">
+              <img src="{{imageUrl}}" alt="Minh hoa cau hoi {{addOne @index}}" class="question-image" />
+            </div>
+          {{/if}}
+        </div>
+
+        {{#if (eq type "single-choice")}}
+          <div class="option-grid">
+            {{#each options}}
+              <label class="option-pill">
+                <input type="radio" name="answers[{{../key}}]" value="{{key}}" />
+                <span>{{text}}</span>
+              </label>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        {{#if (eq type "multiple-choice")}}
+          <div class="option-grid">
+            {{#each options}}
+              <label class="option-pill">
+                <input type="checkbox" name="answers[{{../key}}]" value="{{key}}" />
+                <span>{{text}}</span>
+              </label>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        {{#if (eq type "fill-blank")}}
+          <div class="fill-blank-box">
+            <input
+              type="text"
+              name="answers[{{key}}]"
+              placeholder="Nhap cau tra loi"
+              autocomplete="off"
+            />
+          </div>
+        {{/if}}
+
+        {{#if (eq type "drag-drop")}}
+          <div class="drag-playground" data-question-key="{{key}}">
+            <div class="drag-items">
+              {{#each dragItems}}
+                <button
+                  type="button"
+                  class="drag-chip"
+                  draggable="true"
+                  data-item-key="{{key}}"
+                >
+                  {{label}}
+                </button>
+              {{/each}}
+            </div>
+            <div class="drag-targets">
+              {{#each dragTargets}}
+                <div class="drop-zone" data-target-key="{{key}}">
+                  <span class="drop-zone__label">{{label}}</span>
+                  <span class="drop-zone__value">Tha vao day</span>
+                  <input type="hidden" name="answers[{{../key}}][{{key}}]" />
+                </div>
+              {{/each}}
+            </div>
+          </div>
+        {{/if}}
+      </section>
+    {{/each}}
+
+    <div class="submit-bar">
+      <button type="submit" class="primary-button">Nop bai</button>
+    </div>
+  </form>
+</main>
+
+<script src="/js/exam.js"></script>

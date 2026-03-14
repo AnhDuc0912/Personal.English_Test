@@ -1,0 +1,71 @@
+<main class="exam-page admin-page">
+  <header class="exam-header">
+    <div>
+      <a href="/admin/exams" class="back-link">Quay lai quan tri</a>
+      <p class="eyebrow">Admin</p>
+      <h1>{{#if (eq mode "create")}}Tao de thi moi{{else}}Cap nhat de thi{{/if}}</h1>
+      <p class="hero-copy">Nhap thong tin de thi va tao cau hoi bang form truc quan.</p>
+    </div>
+  </header>
+
+  {{#if errorMessage}}
+    <p class="admin-alert admin-alert--error">{{errorMessage}}</p>
+  {{/if}}
+
+  <section class="question-card admin-form-card">
+    <form action="{{action}}" method="POST" class="admin-form-grid" id="admin-exam-form">
+      <label>
+        <span>Tieu de de thi</span>
+        <input type="text" name="title" required value="{{exam.title}}" />
+      </label>
+
+      <label>
+        <span>Mo ta</span>
+        <textarea name="description" rows="3" required>{{exam.description}}</textarea>
+      </label>
+
+      <div class="admin-inline-fields">
+        <label>
+          <span>Emoji</span>
+          <input type="text" name="heroEmoji" value="{{exam.heroEmoji}}" maxlength="4" />
+        </label>
+
+        <label>
+          <span>Thoi gian (phut)</span>
+          <input type="number" name="durationMinutes" min="1" value="{{exam.durationMinutes}}" />
+        </label>
+
+        <label class="admin-checkbox-wrap">
+          <input type="checkbox" name="isPublished" {{#if exam.isPublished}}checked{{/if}} />
+          <span>Cong khai de thi</span>
+        </label>
+      </div>
+
+      <textarea id="questions-json-storage" name="questionsPayload" hidden>{{exam.questionsPayload}}</textarea>
+
+      <section class="question-builder">
+        <div class="question-builder__header">
+          <div>
+            <h2>Danh sach cau hoi</h2>
+            <p>
+              Ban co the them nhieu cau hoi va chon loai tuong ung: single-choice, multiple-choice,
+              fill-blank, drag-drop. Moi cau hoi co the kem them URL hinh anh minh hoa.
+            </p>
+          </div>
+          <div class="admin-row-actions">
+            <button type="button" class="back-link" id="fill-sample-json">Chen bo cau hoi mau</button>
+            <button type="button" class="primary-link" id="add-question-btn">Them cau hoi</button>
+          </div>
+        </div>
+
+        <div id="question-list" class="question-builder__list"></div>
+      </section>
+
+      <div class="admin-row-actions">
+        <button type="submit" class="primary-button">{{#if (eq mode "create")}}Tao de thi{{else}}Luu thay doi{{/if}}</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<script src="/js/admin-exam-form.js"></script>

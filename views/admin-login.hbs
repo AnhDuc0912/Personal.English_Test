@@ -1,0 +1,25 @@
+<main class="result-page">
+  <section class="result-card admin-auth-card">
+    <a href="/" class="back-link">Trang chu</a>
+    <p class="eyebrow">Admin Login</p>
+    <h1>Dang nhap quan tri</h1>
+
+    {{#if errorMessage}}
+      <p class="admin-alert admin-alert--error">{{errorMessage}}</p>
+    {{/if}}
+
+    <form method="POST" action="/admin/login" class="admin-form-grid">
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" required placeholder="admin@example.com" />
+      </label>
+
+      <label>
+        <span>Mat khau</span>
+        <input type="password" name="password" required placeholder="••••••••" />
+      </label>
+
+      <button type="submit" class="primary-button">Dang nhap</button>
+    </form>
+  </section>
+</main>

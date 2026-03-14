@@ -1,0 +1,48 @@
+<main class="home-page admin-page">
+  <section class="hero-card admin-header-card">
+    <div>
+      <p class="eyebrow">Admin</p>
+      <h1>Quan ly bai kiem tra</h1>
+      <p class="hero-copy">Tao, cap nhat, xoa de thi va kiem soat trang thai hien thi.</p>
+      <p class="hero-copy">Dang nhap voi: <strong>{{currentUser.email}}</strong></p>
+    </div>
+    <div class="admin-header-actions">
+      <a href="/admin/results" class="back-link">Xem lich su ket qua</a>
+      <a href="/admin/exams/new" class="primary-link">Tao de thi moi</a>
+      <form action="/admin/logout" method="POST">
+        <button class="primary-button" type="submit">Dang xuat</button>
+      </form>
+    </div>
+  </section>
+
+  {{#if successMessage}}
+    <p class="admin-alert admin-alert--success">{{successMessage}}</p>
+  {{/if}}
+
+  <section class="exam-grid admin-grid">
+    {{#if exams.length}}
+      {{#each exams}}
+        <article class="exam-card admin-card">
+          <div class="exam-card__emoji">{{heroEmoji}}</div>
+          <p class="exam-card__meta">{{durationMinutes}} phut</p>
+          <h2>{{title}}</h2>
+          <p>{{description}}</p>
+          <p>Trang thai: {{#if isPublished}}Dang hien{{else}}Da an{{/if}}</p>
+          <p>So cau hoi: {{questionCount}}</p>
+          <div class="admin-row-actions">
+            <a href="/exams/{{slug}}" class="back-link">Xem de</a>
+            <a href="/admin/exams/{{_id}}/edit" class="primary-link">Sua</a>
+            <form action="/admin/exams/{{_id}}/delete" method="POST" onsubmit="return confirm('Xoa de thi nay?');">
+              <button class="admin-danger" type="submit">Xoa</button>
+            </form>
+          </div>
+        </article>
+      {{/each}}
+    {{else}}
+      <article class="empty-card">
+        <h2>Chua co de thi nao</h2>
+        <p>Bam "Tao de thi moi" de them bo de dau tien.</p>
+      </article>
+    {{/if}}
+  </section>
+</main>

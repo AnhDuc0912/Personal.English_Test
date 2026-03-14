@@ -1,0 +1,33 @@
+<main class="home-page admin-page">
+  <section class="hero-card admin-header-card">
+    <div>
+      <a href="/admin/exams" class="back-link">Quay lai quan ly de thi</a>
+      <p class="eyebrow">Admin</p>
+      <h1>Lich su ket qua bai thi</h1>
+      <p class="hero-copy">Danh sach ket qua da nop cua hoc sinh.</p>
+    </div>
+    <div class="admin-header-actions">
+      <a href="/admin/exams" class="primary-link">Quan ly de thi</a>
+      <form action="/admin/logout" method="POST">
+        <button class="primary-button" type="submit">Dang xuat</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="question-card admin-form-card">
+    {{#if attempts.length}}
+      <div class="attempt-grid">
+        {{#each attempts}}
+          <article class="attempt-card">
+            <h2>{{examTitle}}</h2>
+            <p><strong>Hoc sinh:</strong> {{participantName}}</p>
+            <p><strong>Diem:</strong> {{score}}% ({{correctCount}}/{{totalQuestions}})</p>
+            <p><strong>Nop luc:</strong> {{createdAt}}</p>
+          </article>
+        {{/each}}
+      </div>
+    {{else}}
+      <p>Chua co ket qua nao duoc luu.</p>
+    {{/if}}
+  </section>
+</main>

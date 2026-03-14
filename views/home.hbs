@@ -1,0 +1,37 @@
+<main class="home-page">
+  <section class="hero-card">
+    <div>
+      <p class="eyebrow">English For Kids</p>
+      <h1>Thi thu vui nhon de be luyen tieng Anh moi ngay</h1>
+      <p class="hero-copy">
+        Gom du 4 dang bai: trac nghiem, chon nhieu dap an, dien vao cho trong va keo tha.
+      </p>
+      <p>
+        <a href="/admin/exams" class="back-link">Vao trang quan tri de thi</a>
+      </p>
+    </div>
+    <div class="hero-badge">A+</div>
+  </section>
+
+  <section class="exam-grid">
+    {{#if exams.length}}
+      {{#each exams}}
+        <article class="exam-card">
+          <div class="exam-card__emoji">{{heroEmoji}}</div>
+          <p class="exam-card__meta">{{durationMinutes}} phut</p>
+          <h2>{{title}}</h2>
+          <p>{{description}}</p>
+          <div class="exam-card__footer">
+            <span>{{questionCount}} cau hoi</span>
+            <a href="/exams/{{slug}}" class="primary-link">Bat dau</a>
+          </div>
+        </article>
+      {{/each}}
+    {{else}}
+      <article class="empty-card">
+        <h2>Chua co de thi</h2>
+        <p>Hay chay lenh seed de them de mau vao MongoDB.</p>
+      </article>
+    {{/if}}
+  </section>
+</main>
